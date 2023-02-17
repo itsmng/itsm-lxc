@@ -1,0 +1,57 @@
+#!/bin/bash
+
+Setup_Variables(){
+	export NEWT_COLORS='root=,red'
+	DBUSER=$( whiptail --inputbox "Enter the MySQL username" 10 100 3>&1 1>&2 2>&3)
+	DBPASSWORD=$(whiptail --passwordbox "Enter the MySQL password" 10 100 3>&1 1>&2 2>&3)
+	DBNAME=$(whiptail --inputbox "Enter the name of the MySQL database" 10 100 3>&1 1>&2 2>&3)
+}
+
+Secure_Mysql(){
+{
+	echo -e "XXX\n0\nConfiguration of MariaDB... \nXXX"
+	mysql_secure_installation <<EOF
+
+y
+${DBPASSWORD}
+${DBPASSWORD}
+y
+y
+y
+y
+EOF
+
+echo -e "XXX\n30\nCreation of the database... \nXXX"
+mysql -uroot -p${DBPASSWORD} -e "CREATE DATABASE ${DBNAME};"
+echo -e "XXX\n75\nCreation of the user... \nXXX"
+mysql -uroot -p${DBPASSWORD} -e "CREATE USER ${DBUSER}@localhost IDENTIFIED BY '${DBPASSWORD}';"
+echo -e "XXX\n0\nConfiguration of permissions... \nXXX"
+mysql -uroot -p${DBPASSWORD} -e "GRANT ALL PRIVILEGES ON ${DBNAME}.* TO '${DBUSER}'@'localhost';"
+} |whiptail --title "Configuration of MariaDB" --gauge "Please wait..." 6 60 0
+}
+
+
+Install_ITSM(){
+{
+	cd /var/www/itsm-ng
+	echo -e "XXX\n50\nInstallation of ITSM-NG... \nXXX"
+	php bin/console itsmng:database:install -H localhost -u ${DBUSER} -p ${DBPASSWORD} -d ${DBNAME} -n
+	echo -e "XXX\n75\nInstallation of ITSM-NG... \nXXX"
+	chown -R www-data:www-data /var/www/itsm-ng
+} |whiptail --title "Installation of ITSM-NG" --gauge "Please wait..." 6 60 0
+}
+
+
+Post_Install(){
+	rm /var/www/itsm-ng/install/install.php
+	whiptail --title "Installation Finish" --msgbox "The installation is Finish\nITSM-NG is available on http://localhost" 8 78
+}
+
+Main(){
+	Setup_Variables;
+	Secure_Mysql;
+	Install_ITSM;
+	Post_Install;
+}
+
+Main
