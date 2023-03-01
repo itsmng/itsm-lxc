@@ -1,41 +1,59 @@
-# Build LXC template
+# ITSM-NG LXC template
+
+LXC is a userspace interface for the Linux kernel containment features. Through a powerful API and simple tools, it lets Linux users easily create and manage system or application containers.
+
+You will find more information at this link : [LXC > Introduction](https://linuxcontainers.org/lxc/introduction/)
 
 ## Requirement
-For building LXC template, we use distrobuilder. The installation guide is available [here](https://github.com/lxc/distrobuilder#installing-from-source).
+
+Distrobuilder is required to build ITSM-NG LXC template.
+
+The installation guide is available [here](https://github.com/lxc/distrobuilder#installing-from-source).
+
 ## Build LXC Image
-The command need to be launch with ROOT permission, you can launch this command with root user, or with sudo or doas software.
+
+To build ITSM-NG LXC template, clone the repo and follow the next documentation.
 
 	$ git clone https://github.com/itsmng/itsm-lxc
 	$ cd itsm-lxc
-	$ distrobuilder build-lxc ubuntu.yaml
-Now, your lxc is builded his name ***rootfs.tar.xz*** you can rename the image name with this command:
+
+The next command line need to be launch with root permission :
+
+	$ sudo distrobuilder build-lxc ubuntu.yaml
+
+Now, ITSM-NG LXC image has been builded with name `rootfs.tar.xz`.
+
+It's possible to rename the image with the next command :
 		
-	$ mv rootfs.tar.xz ItsmNG-VERSION.tar.xz
-## FAQ
+	$ mv rootfs.tar.xz itsmng-VERSION.tar.xz
+
 ### Change ITSM-NG version
-you can change the ITSM-NG version in the template file, this file name ***ubuntu.yaml***
+
+If you want to build an ITSM-NG LXC template with an other ITSM-NG version, edit the `ubuntu.yaml` file and set the version as you want :
 	
+	# line 278: VERSION=1.4.0
 	$ vi ubuntu.yaml
 
-	line 278: VERSION=1.4.0
+## Install LXC template in Proxmox
 
-### Install LXC template in Proxmox
-* Select the LXC template storage
+To install ITSM-NG LXC template on Proxmox, follow the next steps :
+
+* Select the LXC template storage.
 
 ![](Docs/step1.png)
 
-* Click on ***CT Modeles***
+* Click on `CT Modeles`.
 
 ![](Docs/step2.png)
 
-* Click on ***Upload***
+* Click on `Upload`.
 
 ![](Docs/step3.png)
 
-* Click on ***Select*** and select the lxc template
+* Click on `Select File` and select the LXC template
 
 ![](Docs/step4.png)
 
-* Click on ***Upload***
+* Click on `Upload`
 
 ![](Docs/step5.png)

@@ -2,9 +2,9 @@
 
 Setup_Variables(){
 	export NEWT_COLORS='root=,red'
-	DBUSER=$( whiptail --inputbox "Enter the MySQL username" 10 100 3>&1 1>&2 2>&3)
-	DBPASSWORD=$(whiptail --passwordbox "Enter the MySQL password" 10 100 3>&1 1>&2 2>&3)
-	DBNAME=$(whiptail --inputbox "Enter the name of the MySQL database" 10 100 3>&1 1>&2 2>&3)
+	DBUSER=$( whiptail --inputbox "Enter the ITSM-NG MySQL username" 10 100 3>&1 1>&2 2>&3)
+	DBPASSWORD=$(whiptail --passwordbox "Enter the ITSM-NG MySQL password" 10 100 3>&1 1>&2 2>&3)
+	DBNAME=$(whiptail --inputbox "Enter the name of the ITSM-NG MySQL database" 10 100 3>&1 1>&2 2>&3)
 }
 
 Secure_Mysql(){
