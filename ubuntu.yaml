@@ -275,7 +275,7 @@ actions:
     set -eux
 
     # Setup ITSM-NG
-    VERSION=1.4.0
+    VERSION=1.5.1
     wget "https://github.com/itsmng/itsm-ng/releases/download/v${VERSION}/itsm-ng-${VERSION}.tgz"
     tar -xf itsm-ng-${VERSION}.tgz --directory /var/www
     rm -rf itsm-ng-${VERSION}.tgz
