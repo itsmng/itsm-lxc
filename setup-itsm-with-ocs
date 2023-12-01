@@ -1,0 +1,96 @@
+#!/bin/bash
+
+Setup_Variables(){
+	export NEWT_COLORS='root=,red'
+	DBUSER='itsm'
+	ITSM_MDP=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 13)
+	DBNAME='itsm'
+}
+
+Chose_OCS_Install(){
+	if whiptail --title "Do you want to install OCSInventory ?" --yesno "Do you want to install OCSInventory ?" 8 78; then
+		OCS_INSTALL="YES"
+	fi      		
+}
+
+Secure_Mysql(){
+{
+	echo -e "XXX\n0\nConfiguration of MariaDB... \nXXX"
+	mysql_secure_installation <<EOF
+
+y
+${ITSM_MDP}
+${ITSM_MDP}
+y
+y
+y
+y
+EOF
+
+echo -e "XXX\n30\nCreation of the database... \nXXX"
+mysql -uroot -p${ITSM_MDP} -e "CREATE DATABASE ${DBNAME};"
+echo -e "XXX\n75\nCreation of the user... \nXXX"
+mysql -uroot -p${ITSM_MDP} -e "CREATE USER ${DBUSER}@localhost IDENTIFIED BY '${ITSM_MDP}';"
+echo -e "XXX\n0\nConfiguration of permissions... \nXXX"
+mysql -uroot -p${ITSM_MDP} -e "GRANT ALL PRIVILEGES ON ${DBNAME}.* TO '${DBUSER}'@'localhost';"
+} |whiptail --title "Configuration of MariaDB" --gauge "Please wait..." 6 60 0
+}
+
+
+Install_ITSM(){
+{
+	cd /var/www/itsm-ng
+	echo -e "XXX\n50\nInstallation of ITSM-NG... \nXXX"
+	php bin/console itsmng:database:install -H localhost -u ${DBUSER} -p ${ITSM_MDP} -d ${DBNAME} -n
+	echo -e "XXX\n75\nInstallation of ITSM-NG... \nXXX"
+	chown -R www-data:www-data /var/www/itsm-ng
+} |whiptail --title "Installation of ITSM-NG" --gauge "Please wait..." 6 60 0
+}
+
+
+Post_Install(){
+	rm /var/www/itsm-ng/install/install.php
+	unset DBUSER DBPASSWORD DBNAME OCS_DB_NAME OCS_DB_USER OCS_DB_PWD
+	whiptail --title "Installation Finish" --msgbox "The installation is Finish\nITSM-NG is available on http://localhost\nITSM DB password: ${ITSM_MDP}\nOCS DB password: ${OCS_MDP}" 10 90
+}
+
+Setup_OCS(){
+	apt install -y curl gnupg
+	CODEBASE=$(lsb_release -c | sed -n 's/Codename:\s*\(\w\+\)/\1/p')
+	curl -sS http://deb.ocsinventory-ng.org/pubkey.gpg | apt-key add -
+	echo "deb http://deb.ocsinventory-ng.org/ubuntu/ ${CODEBASE} main" | tee /etc/apt/sources.list.d/ocsinventory.list
+	apt update
+	apt install -y ocsinventory
+	chown -R www-data:www-data /var/lib/ocsinventory-reports
+
+	sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 256M/' /etc/php/8.1/fpm/php.ini 
+	sed -i 's/post_max_size = 8M/post_max_size = 256M/' /etc/php/8.1/fpm/php.ini 
+	/etc/init.d/php8.1-fpm restart
+}
+
+Configure_OCS(){
+	OCS_MDP=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 13)
+	sed -i "s/OCS_DB_PWD ocsweb/OCS_DB_PWD ${OCS_MDP}/" /etc/apache2/conf-enabled/z-ocsinventory-server.conf
+	sed -i "s/OCS_DB_PWD ocsweb/OCS_DB_PWD ${OCS_MDP}/" /etc/apache2/conf-availabe/zz-ocsinventory-restapi.conf
+	/etc/init.d/apache2 restart
+
+	apt install unzip -y
+	cd /var/www/itsm-ng/plugins
+	wget https://github.com/itsmng/ocsinventoryng/releases/download/v1.7.6/ocsinventoryng.zip
+	unzip ocsinventoryng.zip
+}
+
+Main(){
+	Setup_Variables;
+	Chose_OCS_Install;
+	if [ "$OCS_INSTALL" = "YES" ]; then
+    	Setup_OCS
+		Configure_OCS
+	fi
+
+	Secure_Mysql;
+	Install_ITSM;
+	Post_Install;
+}
+
+Main
