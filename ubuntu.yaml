@@ -120,11 +120,6 @@ files:
   types:
   - vm
 
-- name: lxd-agent
-  generator: lxd-agent
-  types:
-  - vm
-
 - path: /etc/default/grub.d/50-lxd.cfg
   generator: dump
   content: |-
