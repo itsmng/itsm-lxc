@@ -120,11 +120,6 @@ files:
   types:
   - vm
 
-- name: lxd-agent
-  generator: lxd-agent
-  types:
-  - vm
-
 - path: /etc/default/grub.d/50-lxd.cfg
   generator: dump
   content: |-
@@ -275,7 +270,7 @@ actions:
     set -eux
 
     # Setup ITSM-NG
-    VERSION=1.5.1
+    VERSION=1.6.0
     wget "https://github.com/itsmng/itsm-ng/releases/download/v${VERSION}/itsm-ng-${VERSION}.tgz"
     tar -xf itsm-ng-${VERSION}.tgz --directory /var/www
     rm -rf itsm-ng-${VERSION}.tgz
