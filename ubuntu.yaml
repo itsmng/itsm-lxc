@@ -172,8 +172,6 @@ actions:
     a2enconf php8.1-fpm
     rm /etc/apache2/sites-enabled/000-default.conf
     systemctl enable apache2 php8.1-fpm mariadb
-  releases:
-    - jammy
 
 - trigger: post-packages
   action: |-
