@@ -1,0 +1,48 @@
+name: Build and publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+
+      - name: Install distrobuilder
+        run: |
+          sudo apt update
+          sudo apt install -y debootstrap rsync gpg squashfs-tools git make
+          git clone https://github.com/lxc/distrobuilder.git
+          cd distrobuilder
+          make
+          sudo mv $HOME/go/bin/distrobuilder /usr/local/bin/
+          sudo chmod +x /usr/local/bin/distrobuilder
+
+      - name: Build
+        run: |
+          sudo /usr/local/bin/distrobuilder build-lxc ubuntu.yaml
+
+      - name: Rename artifact
+        run: |
+          mv rootfs.tar.xz itsm-ng-${{ github.ref_name }}.tar.xz
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: itsm-ng-${{ github.ref_name }}.tar.xz
+          path: itsm-ng-${{ github.ref_name }}.tar.xz
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "itsm-ng-${{ github.ref_name }}.tar.xz"
+          body: "New release is available"
+          release_name: LXC Release ${{ github.ref }}
