@@ -31,9 +31,14 @@ jobs:
         run: |
           mv rootfs.tar.xz itsm-ng-v${{ github.ref_name }}.tar.xz
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: itsm-ng-v${{ github.ref_name }}.tar.xz
+          path: itsm-ng-v${{ github.ref_name }}.tar.xz
+
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "itsm-ng-v${{ github.ref_name }}.tar.xz"
           body: "New release is available"
           release_name: LXC Release ${{ github.ref }}
-          
