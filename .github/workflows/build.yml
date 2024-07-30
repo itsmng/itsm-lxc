@@ -20,10 +20,9 @@ jobs:
           git clone https://github.com/lxc/distrobuilder.git
           cd distrobuilder
           make
-          sudo mv distrobuilder /usr/local/bin/
+          sudo mv $HOME/go/bin/distrobuilder /usr/local/bin/
           sudo chmod +x /usr/local/bin/distrobuilder
 
       - name: Build
         run: |
-          /usr/local/bin/distrobuilder
           sudo /usr/local/bin/distrobuilder build-lxc ubuntu.yaml
