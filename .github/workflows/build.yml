@@ -25,6 +25,5 @@ jobs:
 
       - name: Build
         run: |
-          ls -lha /usr/local/bin/distrobuilder
           /usr/local/bin/distrobuilder
           sudo /usr/local/bin/distrobuilder build-lxc ubuntu.yaml
