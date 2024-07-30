@@ -21,8 +21,8 @@ jobs:
           cd distrobuilder
           make
           sudo mv distrobuilder /usr/local/bin/
-          cd .. && rm -rf distrobuilder
 
       - name: Build
         run: |
+          ls -la /usr/local/bin
           sudo /usr/local/bin/distrobuilder build-lxc ubuntu.yaml
