@@ -1,0 +1,27 @@
+name: Build and publish
+
+on:
+  push:
+    tags:
+      - '*'  # Cela va écouter tous les nouveaux tags
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+
+      - name: Install distrobuilder
+        run: |
+          git clone https://github.com/lxc/distrobuilder.git
+          cd distrobuilder
+          make
+          mv distrobuilder /usr/local/bin/
+          cd .. && rm -rf distrobuilder
+
+      - name: Build
+        run: |
+          distrobuilder build-lxc ubuntu.yaml
