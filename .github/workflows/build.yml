@@ -43,6 +43,8 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "itsm-ng-${{ github.ref_name }}.tar.xz"
+          files: "itsm-ng-${{ github.ref_name }}.tar.xz"
           body: "New release is available"
-          release_name: LXC Release ${{ github.ref }}
+          name: LXC Release ${{ github.ref }}
+          draft: true
+          generate_release_notes: true
