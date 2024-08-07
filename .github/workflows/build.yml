@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          sudo /usr/local/bin/distrobuilder build-lxc ubuntu.yaml
+          sudo /usr/local/bin/distrobuilder build-lxc almalinux.yaml
 
       - name: Rename artifact
         run: |
@@ -45,4 +45,5 @@ jobs:
         with:
           artifacts: "itsm-ng-${{ github.ref_name }}.tar.xz"
           body: "New release is available"
-          release_name: LXC Release ${{ github.ref }}
+          name:  LXC Release ${{ github.ref }}
+          generateReleaseNotes: true
