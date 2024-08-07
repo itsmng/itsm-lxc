@@ -12,10 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
 
       - name: Install distrobuilder
         run: |
@@ -36,7 +36,7 @@ jobs:
           mv rootfs.tar.xz itsm-ng-${{ github.ref_name }}.tar.xz
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: itsm-ng-${{ github.ref_name }}.tar.xz
           path: itsm-ng-${{ github.ref_name }}.tar.xz
@@ -45,5 +45,6 @@ jobs:
         with:
           artifacts: "itsm-ng-${{ github.ref_name }}.tar.xz"
           body: "New release is available"
-          name:  LXC Release ${{ github.ref }}
+          name: LXC Release ${{ github.ref_name }}
+          draft: true
           generateReleaseNotes: true
