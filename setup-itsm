@@ -43,7 +43,7 @@ Install_ITSM(){
 
 Post_Install(){
 	rm /usr/share/itsm-ng/install/install.php
-	whiptail --title "Installation Finish" --msgbox "The installation is Finish\nITSM-NG is available on https://$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')" 8 78
+	whiptail --title "Installation Finish" --msgbox "The installation is Finish\nITSM-NG is available on http://$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')" 8 78
 }
 
 Main(){
