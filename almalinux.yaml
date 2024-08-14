@@ -202,7 +202,7 @@ actions:
     echo 'LANG=fr_FR.utf8' > /etc/locale.conf
 
     # Add setup-itsm script
-    wget https://raw.githubusercontent.com/itsmng/itsm-lxc/main/setup-itsm -O /usr/local/bin/setup-itsm
+    curl https://raw.githubusercontent.com/itsmng/itsm-lxc/main/setup-itsm -o /usr/local/bin/setup-itsm
     chmod +x /usr/local/bin/setup-itsm
     
     # Add autorun
