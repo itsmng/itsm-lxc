@@ -19,20 +19,13 @@ To build ITSM-NG LXC template, clone the repo and follow the next documentation.
 
 The next command line need to be launch with root permission :
 
-	$ sudo distrobuilder build-lxc ubuntu.yaml
+	$ sudo distrobuilder build-lxc alamalinux.yaml
 
 Now, ITSM-NG LXC image has been builded with name `rootfs.tar.xz`.
 
 It's possible to rename the image with the next command :
 		
 	$ mv rootfs.tar.xz itsmng-VERSION.tar.xz
-
-### Change ITSM-NG version
-
-If you want to build an ITSM-NG LXC template with an other ITSM-NG version, edit the `ubuntu.yaml` file and set the version as you want :
-	
-	# line 278: VERSION=1.4.0
-	$ vi ubuntu.yaml
 
 ## Install LXC template in Proxmox
 
