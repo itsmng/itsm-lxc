@@ -1,5 +1,7 @@
+---
 name: Build and publish
 
+# yamllint disable-line rule:truthy
 on:
   push:
     tags:
