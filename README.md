@@ -19,7 +19,7 @@ To build ITSM-NG LXC template, clone the repo and follow the next documentation.
 
 The next command line need to be launch with root permission :
 
-	$ sudo distrobuilder build-lxc alamalinux.yaml
+	$ sudo distrobuilder build-lxc almalinux.yaml
 
 Now, ITSM-NG LXC image has been builded with name `rootfs.tar.xz`.
 
