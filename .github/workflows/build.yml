@@ -41,10 +41,11 @@ jobs:
           name: itsm-ng-${{ github.ref_name }}.tar.xz
           path: itsm-ng-${{ github.ref_name }}.tar.xz
 
-      - uses: ncipollo/release-action@v1
+      - name: Create release
+        uses: softprops/action-gh-release@v2
         with:
-          artifacts: "itsm-ng-${{ github.ref_name }}.tar.xz"
+          files: itsm-ng-${{ github.ref_name }}.tar.xz
           body: "New release is available"
           name: LXC Release ${{ github.ref_name }}
           draft: true
-          generateReleaseNotes: true
+          generate_release_notes: true
