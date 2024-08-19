@@ -22,20 +22,20 @@ y
 EOF
 
 echo -e "XXX\n30\nCreation of the database... \nXXX"
-mysql -uroot -p${DBPASSWORD} -e "CREATE DATABASE ${DBNAME};"
+mysql -uroot -p"${DBPASSWORD}" -e "CREATE DATABASE ${DBNAME};"
 echo -e "XXX\n75\nCreation of the user... \nXXX"
-mysql -uroot -p${DBPASSWORD} -e "CREATE USER ${DBUSER}@localhost IDENTIFIED BY '${DBPASSWORD}';"
+mysql -uroot -p"${DBPASSWORD}" -e "CREATE USER ${DBUSER}@localhost IDENTIFIED BY '${DBPASSWORD}';"
 echo -e "XXX\n0\nConfiguration of permissions... \nXXX"
-mysql -uroot -p${DBPASSWORD} -e "GRANT ALL PRIVILEGES ON ${DBNAME}.* TO '${DBUSER}'@'localhost';"
+mysql -uroot -p"${DBPASSWORD}" -e "GRANT ALL PRIVILEGES ON ${DBNAME}.* TO '${DBUSER}'@'localhost';"
 } |whiptail --title "Configuration of MariaDB" --gauge "Please wait..." 6 60 0
 }
 
 
 Install_ITSM(){
 {
-	cd /usr/share/itsm-ng
+	cd /usr/share/itsm-ng || exit
 	echo -e "XXX\n50\nInstallation of ITSM-NG... \nXXX"
-	php bin/console itsmng:database:install -H localhost -u ${DBUSER} -p ${DBPASSWORD} -d ${DBNAME} -n
+	php bin/console itsmng:database:install -H localhost -u "${DBUSER}" -p "${DBPASSWORD}" -d "${DBNAME}" -n
 	echo -e "XXX\n100\nInstallation of ITSM-NG... \nXXX"
 } |whiptail --title "Installation of ITSM-NG" --gauge "Please wait..." 6 60 0
 }
