@@ -15,4 +15,3 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v16
       - name: 🚀 Run shellcheck
         uses: bewuethr/shellcheck-action@v2
-
