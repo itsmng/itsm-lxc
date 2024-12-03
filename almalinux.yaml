@@ -181,7 +181,7 @@ packages:
 
     - packages:
         - https://rpm.itsm-ng.org/redhat/9/itsm-ng-release-1.0-1.el9.noarch.rpm
-        - dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+        - https://rpms.remirepo.net/enterprise/remi-release-9.rpm
       action: install
 
 actions:
