@@ -220,7 +220,6 @@ actions:
       set -eux
 
       mkdir -p /etc/NetworkManager/conf.d/
-      printf "[main]\ndhcp=dhclient" \
-       > /etc/NetworkManager/conf.d/dhcp-client.conf
+      printf "[main]\ndhcp=internal\n" > /etc/NetworkManager/conf.d/dhcp-client.conf
 
       systemctl enable NetworkManager.service httpd.service mariadb.service
