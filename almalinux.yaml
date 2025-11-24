@@ -162,7 +162,6 @@ packages:
         - cronie
         - cronie-noanacron
         - curl
-        - dhclient
         - glibc-langpack-en
         - glibc-locale-source
         - hostname
